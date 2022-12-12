@@ -39,15 +39,14 @@ public class ExamRestController {
         return personnelRepository.save(personnel);
     }
 
+    @PostMapping("/ajoutParkingetZones")
+    public void ajoutParkingetZones(@RequestBody Parking parking){
+        List <Zone> zones = parking.getZones();
+        zones.stream().forEach(zone -> zone.setParking(parking));
+        parking.setZones(parking.getZones());
+        parkingRepository.save(parking);
 
-    @PostMapping("/addParkingZone/{id}")
-    public void ajoutParkinggetZones(@RequestBody Zone zone, @PathVariable Integer idZ) {
-
-        Parking parking1 = ParkingRepository.findById(idZ).orElse(null);
-
-
-        parking1.getZones().add(zone);
-        return ZoneRepository.save(zone);
+        zoneRepository.saveAll(parking.getZones());
     }
 
     @PutMapping("/affecterPersonnelZone/{idZone}/{idGarde}")
@@ -57,8 +56,13 @@ public class ExamRestController {
 
     }
 
-    @GetMapping("getAllPersonnel")
+
+
+    @GetMapping("/getAllPersonnelParking")
     public List<Personnel> getAllPersonnelByParking(@RequestBody Parking parking) {
+        Parking parking1 = parkingRepository.findById(parking.getId()).orElse(null);
+        List<Zone> zones = parking1.getZones();
+        List<Personnel> personnels=new ArrayList<Personnel>();
 
 
         return ParkingRepository.);
@@ -71,8 +75,13 @@ public class ExamRestController {
 
 
         Personnel personnel = personnelRepository.findById(idPersonnel).orElse(null);
-        return personnelRepository
+        return personnel ;
     }
+
+
+
+
+
 }
 
 
